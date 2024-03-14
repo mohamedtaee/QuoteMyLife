@@ -16,12 +16,6 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/ed686deaf7.js" crossorigin="anonymous"></script>
 
-    <!-- Clerk -->
-
-
-
-
-
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -33,7 +27,7 @@
     <!-- JS -->
     <script src="{{ url_for('static', filename='js/submitUtils.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/userUtils.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/dropdownUtils.js') }}" defer></script>
+    <!-- <script src="{{ url_for('static', filename='js/dropdownUtils.js') }}" defer></script> -->
 
 
 </head>
@@ -110,26 +104,10 @@
         </div>
     </div>
 
-    <!-- CLERK AUTHENTICATION -->
-    <!-- <div id="auth-links">
-        <button class="btn btn-outline-secondary" onclick="Clerk.openSignUp()">Sign Up</button>
-        <button class="btn btn-outline-primary" onclick="Clerk.openSignIn()">Sign In</button>
-    </div>
-
-    <div id="user-button"></div>
-
-    -->
-
     <!-- <div id="no-frontend-api-warning" hidden>
         <h3>No Frontend API found</h3>
         <h4>Add it to the top of <code>src/script.js</code>.</h4>
     </div> -->
-
-    <!-- <div>
-        <p id="welcome-name">Welcome!</p>
-    </div> -->
-
-
 </div>
 
 <script src="{{ url_for('static', filename='vendors/clerk/script.js') }}" async crossorigin="anonymous"></script>

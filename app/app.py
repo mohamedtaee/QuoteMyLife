@@ -7,6 +7,7 @@ project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
 from utils.mongo_db import MongoDB
+from utils.quote_model_gpt import submit_user_prompt
 # from scripts import openai_prompt
 
 load_dotenv()
@@ -18,12 +19,12 @@ def index():
     return render_template('index.html')
 
 
-# @app.route('/ai')
-# def ai_prompt():
-#     userid = request.args.get('userid')
-#     holy_book = request.args.get('holybook')
-#     holy_figure = request.args.get('holyfigure')
-#     question = request.args.get('question')
+@app.route('/ai')
+def ai_prompt():
+    userid = request.args.get('userid')
+    question = request.args.get('question')
+
+    prompt_response = submit_user_prompt(question)
 
 #     openai_response = openai_prompt.ai_prompt(question=question, holybook=holy_book, holyfigure=holy_figure)
 #     response_id = openai_response.id
@@ -32,8 +33,8 @@ def index():
 
 #     answer = openai_response.choices[0].text.strip()
 
-#     mongo = MongoDB()
-#     mongo.store_openai_response(openai_response)
+    # mongo = MongoDB()
+    # mongo.store_openai_response(openai_response)
 
 #     mongo.store_qa(user_id=userid,
 #                    question=question,
@@ -42,8 +43,8 @@ def index():
 #                    holyfigure=holy_figure,
 #                    response_id=response_id)
 
-#     print("The answer", answer)
-#     return jsonify(answer)
+    print("RESPONSE:", prompt_response)
+    return jsonify(prompt_response)
 
 
 # @app.route('/mongo')
