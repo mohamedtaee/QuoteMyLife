@@ -8,64 +8,55 @@ sys.path.append(str(project_root))
 
 from utils.mongo_db import MongoDB
 from utils.quote_model_gpt import submit_user_prompt
+
 # from scripts import openai_prompt
 
 load_dotenv()
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
-@app.route('/ai')
+@app.route("/ai")
 def ai_prompt():
-    userid = request.args.get('userid')
-    question = request.args.get('question')
+    userid = request.args.get("userid")
+    question = request.args.get("question")
 
     prompt_response = submit_user_prompt(question)
 
-#     openai_response = openai_prompt.ai_prompt(question=question, holybook=holy_book, holyfigure=holy_figure)
-#     response_id = openai_response.id
+    try:
+        mongo = MongoDB()
+        mongo.store_qa(prompt=question, userid=userid, response=prompt_response)
 
-#     print(openai_response)
+        return jsonify(prompt_response)
 
-#     answer = openai_response.choices[0].text.strip()
-
-    # mongo = MongoDB()
-    # mongo.store_openai_response(openai_response)
-
-#     mongo.store_qa(user_id=userid,
-#                    question=question,
-#                    answer=answer,
-#                    holybook=holy_book,
-#                    holyfigure=holy_figure,
-#                    response_id=response_id)
-
-    print("RESPONSE:", prompt_response)
-    return jsonify(prompt_response)
+    except Exception as e:
+        return jsonify(e)
 
 
-# @app.route('/mongo')
-# def add_user():
-#     userid = request.args.get('userid')
-#     first_name = request.args.get('firstname')
-#     last_name = request.args.get('lastname')
-#     email = request.args.get('email')
+@app.route("/mongo")
+def add_user():
+    userid = request.args.get("userid")
+    first_name = request.args.get("firstname")
+    last_name = request.args.get("lastname")
+    email = request.args.get("email")
 
-#     user = {"user_id": userid,
-#             "first_name": first_name,
-#             "last_name": last_name,
-#             "email": email
-#             }
+    user = {
+        "user_id": userid,
+        "first_name": first_name,
+        "last_name": last_name,
+        "email": email,
+    }
 
-#     mongo = MongoDB()
+    mongo = MongoDB()
 
-#     if mongo.add_user(user):
-#         return jsonify({"status": "success"})
-#     else:
-#         return jsonify({"status": "error"})
+    if mongo.add_user(user):
+        return jsonify({"status": "success"})
+    else:
+        return jsonify({"status": "error"})
 
 
 # @app.route('/questions_remaining')
@@ -86,5 +77,5 @@ def ai_prompt():
 #     return jsonify(mongo.decrement_questions_remaining(userid))
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
